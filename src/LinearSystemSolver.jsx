@@ -5,16 +5,13 @@ const math = create(all);
 
 function LinearSystemSolver() {
   const [size, setSize] = useState(2);
-  // Koefisien matriks A, size x size
   const [coefficients, setCoefficients] = useState(
     Array(size).fill(0).map(() => Array(size).fill(0))
   );
-  // Vector konstanta b
   const [constants, setConstants] = useState(Array(size).fill(0));
   const [result, setResult] = useState(null);
   const [steps, setSteps] = useState([]);
 
-  // Reset on size change
   const changeSize = (newSize) => {
     setSize(newSize);
     setCoefficients(Array(newSize).fill(0).map(() => Array(newSize).fill(0)));
@@ -43,7 +40,6 @@ function LinearSystemSolver() {
     });
   };
 
-  // Gaussian elimination method
   const gaussianElimination = (A, b) => {
     const n = A.length;
     const M = A.map(row => [...row]);
@@ -51,7 +47,6 @@ function LinearSystemSolver() {
     const stepList = [];
 
     for (let k = 0; k < n; k++) {
-      // Find pivot
       let max = Math.abs(M[k][k]);
       let maxRow = k;
       for (let i = k + 1; i < n; i++) {
@@ -61,20 +56,17 @@ function LinearSystemSolver() {
         }
       }
 
-      // Swap max row
       if (maxRow !== k) {
         [M[k], M[maxRow]] = [M[maxRow], M[k]];
         [B[k], B[maxRow]] = [B[maxRow], B[k]];
         stepList.push(`Swap row ${k + 1} with row ${maxRow + 1}`);
       }
 
-      // Check for zero pivot
       if (M[k][k] === 0) {
         stepList.push("No unique solution (zero pivot)");
         return { solution: null, steps: stepList };
       }
 
-      // Eliminate below pivot
       for (let i = k + 1; i < n; i++) {
         const factor = M[i][k] / M[k][k];
         stepList.push(`Eliminate row ${i + 1} using row ${k + 1}, factor: ${factor.toFixed(3)}`);
@@ -85,7 +77,6 @@ function LinearSystemSolver() {
       }
     }
 
-    // Back substitution
     const x = Array(n).fill(0);
     for (let i = n - 1; i >= 0; i--) {
       let sum = 0;

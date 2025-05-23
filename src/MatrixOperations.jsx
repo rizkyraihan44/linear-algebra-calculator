@@ -3,7 +3,6 @@ import { create, all } from "mathjs";
 
 const math = create(all);
 
-// Fungsi rank manual
 function matrixRank(matrix) {
   const m = matrix.map(row => [...row]);
   const rows = m.length;
